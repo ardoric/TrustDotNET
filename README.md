@@ -19,3 +19,7 @@ This uses HttpClient and will fail because this API does not use ServicePointMan
 ## HttpClient.cshtml.cs
 
 This uses HttpClient and will succeed since it is configured to use HttpClientHandler to override the default behavior
+
+## HttpClientDependency.cshtml.cs
+
+This version uses HttpClient with dependency injection which is set up on Program.cs . With this approach you do not have to set up HttpClient on every use.

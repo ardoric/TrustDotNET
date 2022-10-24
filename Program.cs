@@ -24,6 +24,21 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
+// add HttpClient as a singleton (best practice?) dependency injection
+// any page / service using HttpClient can just "request" it.
+builder.Services.AddSingleton<HttpClient>(new HttpClient(new HttpClientHandler
+{
+    ServerCertificateCustomValidationCallback = (msg, cert, chain, error) =>
+    {
+        if (error == SslPolicyErrors.None)
+            return true;
+
+        if (error == SslPolicyErrors.RemoteCertificateChainErrors)
+            return chain.ChainElements[^1].Certificate.Thumbprint == "7890C8934D5869B25D2F8D0D646F9A5D7385BA85".ToUpper();
+
+        return false;
+    }
+}));
 
 var app = builder.Build();
 
